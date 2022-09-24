@@ -10,12 +10,64 @@ game = True
 
 
 
+class GameSprite(sprite.Sprite):
+    def __init__(self, name_image, x, y, width, height, speed):
+        super().__init__()
+        self.image = transform.scale(image.load(name_image), (width, height))
+        self.rect = self.image.get_rect()
+        self.rect.x = x
+        self.rect.y = y
+        self.speed = speed
+        
+    def reset(self):
+        window.blit(self.image, (self.rect.x, self.rect.y))
+
+
+
+class Platform(GameSprite):
+    def move(self):
+        keys = key.get_pressed()
+        if keys[K_w] and self.rect.y > 0:
+            self.rect.y -= self.speed
+        if keys[K_s] and self.rect.y < height - 250:
+            self.rect.y += self.speed
+
+    def move_2(self):
+        keys = key.get_pressed()
+        if keys[K_UP] and self.rect.y > 0:
+            self.rect.y -= self.speed
+        if keys[K_DOWN] and self.rect.y < height - 250:
+            self.rect.y += self.speed
+
+
+
+
+class Ball(GameSprite):
+    def update(self):
+        if self.rect.y < height:
+            self.rect.y 
+        else:
+            counter += 1
+            self.rect.y = 0
+            self.rect.x = randint(0, width)
+
+platform_1 = Platform('platform.jpg', 50, 600, 35, 250, 5)
+platform_2 = Platform('platform.jpg', 1925, 600, 35, 250, 5)
+
 
 while game:
     for e in event.get():
         if e.type == QUIT:
             game = False
+    
+    window.fill((134, 217, 209))
 
-            
+
+    platform_1.reset()
+    platform_1.move()
+    platform_2.reset()
+    platform_2.move_2()
+
+
     display.update()
     clock.tick(FPS)
